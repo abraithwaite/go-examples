@@ -39,25 +39,33 @@ func main() {
 	}()
 	x := queue{}
 	pSlice(&x.fifo)
+
 	// Allocate roughly 1 GB
 	x.fifo = make([]int, 0, 125000000)
 	for i := 0; i < 125000000; i++ {
 		x.push(1)
 	}
 	pSlice(&x.fifo)
+
+	// Free most of the allocated mem
 	x.fifo = x.fifo[120000000:]
+	runtime.GC()
+
 	pSlice(&x.fifo)
 	PrintMemUsage()
+
 	fmt.Print("press any key to continue")
 	reader := bufio.NewReader(os.Stdin)
 	_, _ = reader.ReadString('\n')
 	y := make([]int, len(x.fifo))
 	copy(y, x.fifo)
 	x.fifo = nil
+
+	runtime.GC()
 	pSlice(&x.fifo)
 	pSlice(&y)
-	runtime.GC()
 	PrintMemUsage()
+
 }
 
 func pSlice(s *[]int) {
