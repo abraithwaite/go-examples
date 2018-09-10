@@ -26,6 +26,7 @@ func (q *queue) push(s int) {
 func (q *queue) pop() (s int) {
 	q.Lock()
 	if len(q.fifo) == 0 {
+		q.Unlock()
 		return 0
 	}
 	q.fifo, s = q.fifo[1:], q.fifo[0]
