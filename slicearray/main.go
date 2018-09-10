@@ -34,6 +34,8 @@ func (q *queue) pop() (s int) {
 	return s
 }
 
+// https://forum.golangbridge.org/t/free-memory-of-slice/3713
+
 func main() {
 	go func() {
 		fmt.Println(http.ListenAndServe("localhost:6060", nil))
